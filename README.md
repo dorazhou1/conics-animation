@@ -1,2 +1,2 @@
-"# conic-section-animation" 
+# conic-section-animation
 work in progress
