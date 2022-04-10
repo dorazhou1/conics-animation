@@ -31,7 +31,7 @@ scene.add(cone2);
 cone.position.y = -1/2;
 cone2.position.y = 1/2;
 
-var geom = new THREE.PlaneGeometry(7, 7, 7, 7);
+var geom = new THREE.PlaneGeometry(7, 7, 7, 7); // change 0 to 7 later
 var mat = new THREE.MeshBasicMaterial({
   color: 0xe28743,
   opacity: 0.5,
@@ -41,6 +41,30 @@ mat.side = THREE.DoubleSide;
 var plane = new THREE.Mesh(geom, mat);
 
 scene.add(plane);
+
+var mat2 = new THREE.MeshBasicMaterial({
+  color: 0x2596be,
+  opacity: 0.5,
+  transparent: false,
+});
+
+var sphere = new THREE.Mesh(new THREE.SphereGeometry(1,100,100), mat2);
+scene.add(sphere);
+var sphere2 = new THREE.Mesh(new THREE.SphereGeometry(1,100,100), mat2);
+scene.add(sphere2);
+
+function updateSpherePos(sphere , top) {
+  var r = sphere.scale.x;
+  var R = cone.scale.x;
+  var H = cone.scale.y;
+  sphere.position.y = top * Math.sqrt((r*H/R)*(r*H/R)+r*r)*.9;
+  console.log(Math.sqrt((r*H/R)*(r*H/R)+r*r));
+}
+
+updateSpherePos(sphere, 1);
+updateSpherePos(sphere2, -1);
+
+
 
 const gui = new GUI();
 
@@ -58,12 +82,14 @@ const planeData = {
   rotateY: 0.5,
   rotateZ: 0.5,
   extend: 1,
+  position: 0,
   transparent: false,
 };
 planeFolder.add(planeData, "rotateX", 0, 2 * 3.1415).onChange(generatePlane);
 planeFolder.add(planeData, "rotateY", 0, 2 * 3.1415).onChange(generatePlane);
-// planeFolder.add(planeData, "rotateZ", 0, 2 * 3.1415).onChange(generatePlane);
-planeFolder.add(planeData, "extend", 0, 2 * 3.1415).onChange(generatePlane);
+planeFolder.add(planeData, "rotateZ", 0, 2 * 3.1415).onChange(generatePlane);
+planeFolder.add(planeData, "extend", 0, 10).onChange(generatePlane);
+planeFolder.add(planeData, "position", 0, 10).onChange(generatePlane);
 planeFolder.add(planeData, "transparent").onChange(generatePlane);
 
 function generatePlane() {
@@ -72,6 +98,7 @@ function generatePlane() {
   plane.rotation.z = planeData.rotateZ;
   plane.scale.x = planeData.extend;
   plane.scale.y = planeData.extend;
+  plane.position.x = planeData.position;
   plane.material.transparent = planeData.transparent;
 }
 
@@ -92,6 +119,24 @@ function generateCone() {
   cone2.scale.x = coneData.radius;
   cone.scale.z = coneData.radius;
   cone2.scale.z = coneData.radius;
+  updateSpherePos(sphere, 1);
+  updateSpherePos(sphere2, -1)
+}
+
+const sphereFolder = gui.addFolder("Spheres");
+const sphereData = {
+  radius: 1,
+}
+sphereFolder.add(sphereData, "radius", 0, 5).onChange(generateSphere);
+function generateSphere() {
+  sphere.scale.y = sphereData.radius;
+  sphere2.scale.y = sphereData.radius;
+  sphere.scale.x = sphereData.radius;
+  sphere2.scale.x = sphereData.radius;
+  sphere.scale.z = sphereData.radius;
+  sphere2.scale.z = sphereData.radius;
+  updateSpherePos(sphere, 1);
+  updateSpherePos(sphere2, -1)
 }
 
 let isMouseDown = true;
