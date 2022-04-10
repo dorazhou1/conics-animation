@@ -1,3 +1,11 @@
-body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
+body { 
+    margin: 0; 
+    overflow: hidden;
+}
+#link { 
+    position: absolute;
+    color: white;
+    font-family: Consolas;
+    padding: 5px;
+    bottom: 0;
 }
