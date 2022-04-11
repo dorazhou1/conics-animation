@@ -57,7 +57,7 @@ function updateSpherePos(sphere , top) {
   var r = sphere.scale.x;
   var R = cone.scale.x;
   var H = cone.scale.y;
-  sphere.position.y = top * Math.sqrt((r*H/R)*(r*H/R)+r*r)*.9;
+  sphere.position.y = top * Math.sqrt((r*H/R)*(r*H/R)+r*r)*1.01;
   console.log(Math.sqrt((r*H/R)*(r*H/R)+r*r));
 }
 
